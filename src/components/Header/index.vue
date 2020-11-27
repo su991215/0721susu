@@ -10,7 +10,9 @@
             <p>
               <span>请</span>
               &nbsp; <router-link to="/login">登录</router-link>
-              <router-link to="/register" class="register">免费注册</router-link>
+              <router-link to="/register" class="register"
+                >免费注册</router-link
+              >
             </p>
           </div>
           <div class="typeList">
@@ -39,7 +41,11 @@
               id="autocomplete"
               class="input-error input-xxlarge"
             />
-            <button class="sui-btn btn-xlarge btn-danger" type="button">
+            <button
+              @click="search"
+              class="sui-btn btn-xlarge btn-danger"
+              type="button"
+            >
               搜索
             </button>
           </form>
@@ -52,6 +58,12 @@
 <script>
 export default {
   name: "Header",
+  methods: {
+    search() {
+      // 编程式导航
+      this.$router.push("/search");
+    },
+  },
 };
 </script>
 
