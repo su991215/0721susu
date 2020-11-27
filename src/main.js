@@ -2,9 +2,12 @@
 import Vue from "vue";
 import App from "./App";
 
+import router from "./router";
+
 Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
 new Vue({
   render: (h) => h(App),
+  // 这里使用router
+  router,
 }).$mount("#app");
