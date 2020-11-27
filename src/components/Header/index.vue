@@ -9,7 +9,7 @@
             <p>尚品汇欢迎您！</p>
             <p>
               <span>请</span>
-              <a href="###">登录</a>
+              &nbsp; <a href="###">登录</a>
               <a href="###" class="register">免费注册</a>
             </p>
           </div>
@@ -67,6 +67,10 @@ export default {
       margin: 0 auto;
       overflow: hidden;
 
+      a:hover {
+        color: hotpink;
+        text-decoration: none;
+      }
       .loginList {
         float: left;
 
@@ -87,7 +91,7 @@ export default {
 
         a {
           padding: 0 10px;
-
+          // color: red;
           & + a {
             border-left: 1px solid #b3aeae;
           }
