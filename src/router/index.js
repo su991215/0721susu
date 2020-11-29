@@ -19,9 +19,11 @@ export default new VueRouter({
     {
       path: "/register",
       component: Register,
+      ifFooterShow: true,
     },
     {
-      path: "/search",
+      // ?代表可以有值可以没值
+      path: "/search/:searchText?",
       component: Search,
     },
   ],

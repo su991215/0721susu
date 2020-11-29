@@ -2,7 +2,7 @@
   <div>
     <Header />
     <router-view></router-view>
-    <Footer />
+    <Footer v-if="!$route.meta.isFooterShow" />
   </div>
 </template>
 
@@ -12,6 +12,11 @@ import Footer from "./components/Footer";
 
 export default {
   name: "App",
+  // data() {
+  //   return {
+  //     isFooterShow: true,
+  //   };
+  // },
   components: {
     Header,
     Footer,
