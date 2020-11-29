@@ -69,7 +69,12 @@ export default {
       // 生存跳转的路径
       const location = "/search" + params;
       // 编程式导航 路径
-      this.$router.push(location);
+      this.$router.push(location, (res) => {
+        console.log("成功", res),
+          (err) => {
+            console.log(err);
+          };
+      });
     },
     // search() {
     //   // this里面提取searchText
