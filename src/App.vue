@@ -2,7 +2,9 @@
   <div>
     <Header />
     <router-view></router-view>
-    <Footer v-if="!$route.meta.isFooterShow" />
+    <!-- 当不上登录或者是注册时候，就显示 -->
+    <!-- <Footer v-if="!$route.pa.isFooterShow" /> -->
+    <Footer v-if="$route.path !== '/login' && $route.path !== '/register'" />
   </div>
 </template>
 

@@ -71,6 +71,18 @@ export default {
       // 编程式导航 路径
       this.$router.push(location);
     },
+    // search() {
+    //   // this里面提取searchText
+    //   // 获取搜索的数据
+    //   const { searchText } = this;
+    //   // 编程式导航 路径
+    //   this.$router.push({
+    //     name: "/search",
+    //     params: {
+    //       searchText:searchText,
+    //     },
+    //   });
+    // },
   },
 };
 </script>
