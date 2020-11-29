@@ -13,4 +13,11 @@ module.exports = {
       },
     },
   },
+  devServer:{
+    proxy:{
+      '^/api':{
+        targer:'/http://182.92.128.115',
+      }
+    }
+  }
 };
