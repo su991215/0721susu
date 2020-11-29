@@ -11,7 +11,7 @@ export default {
   name: "Login",
   methods: {
     login() {
-      reqLogin("13700000000", "111111")
+      reqLogin("137000000001", "111111")
       .then((res) => {
         console.log("res", res);
       })
