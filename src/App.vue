@@ -11,6 +11,7 @@
 <script>
 import Header from "@comps/Header";
 import Footer from "@comps/Footer";
+import { reqBaseCategoryList } from "@api/home";
 
 export default {
   name: "App",
@@ -22,6 +23,10 @@ export default {
   components: {
     Header,
     Footer,
+  },
+  async mounted() {
+    const result = await reqBaseCategoryList();
+    console.log("result", result);
   },
 };
 </script>
