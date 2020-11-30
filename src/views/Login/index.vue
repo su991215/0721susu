@@ -1,7 +1,8 @@
 <template>
   <div>
     Login
-    <button @click="login">登录</button>
+    <!-- <button @click="login">登录</button> -->
+    <el-button :plain="true" @click="login">登录</el-button>
   </div>
 </template>
 
@@ -11,11 +12,9 @@ export default {
   name: "Login",
   methods: {
     login() {
-      reqLogin("137000000001", "111111")
-      .then((res) => {
+      reqLogin("137000000001", "111111").then((res) => {
         console.log("res", res);
-      })
-      .c;
+      }).c;
     },
   },
 };
