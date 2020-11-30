@@ -38,7 +38,7 @@
                       v-for="grandChild in child.categoryChild"
                       :key="grandChild.categoryId"
                     >
-                      <a href="">{{grandChild.categoryName}}</a>
+                      <a href="">{{ grandChild.categoryName }}</a>
                     </em>
                   </dd>
                 </dl>
@@ -52,18 +52,28 @@
 </template>
 
 <script>
-import { reqGetBaseCategoryList } from "@api/home";
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "TypeNav",
-  data() {
-    return {
-      // 初始化响应式数据
-      categoryList: [],
-    };
+  // data() {
+  //   return {
+  //     // 初始化响应式数据
+  //     categoryList: [],
+  //   };
+  // },
+  computed: {
+    ...mapState({
+      categoryList: (state) => state.home.categoryList,
+      testCount:(state)=>state.testCount
+    }),
   },
-  async mounted() {
-    const result = await reqGetBaseCategoryList();
-    this.categoryList = result.slice(0,15 );
+  methods: {
+    ...mapActions(["getCategoryList"]),
+  },
+  mounted() {
+    // 调用vuex的action函数
+    this.getCategoryList();
   },
 };
 </script>
