@@ -186,6 +186,8 @@ export default {
 </script>
 
 <style  lang="less" scoped>
+// 控制显示隐藏
+
 .type-nav {
   border-bottom: 2px solid #e1251b;
 
@@ -225,6 +227,14 @@ export default {
       position: absolute;
       background: #fafafa;
       z-index: 999;
+
+      &.search-enter-active {
+        transition: height 0.5s;
+        overflow: hidden;
+      }
+      &.search-enter {
+        height: 0px;
+      }
 
       .all-sort-list2 {
         .item {
