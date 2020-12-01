@@ -12,6 +12,10 @@ import store from "./store";
 import "./styles/reset.css";
 import "./plugins/element.js";
 
+// 引入mockSever，为了加载里面的代码
+// 一但加载，就会启动mock服务器，从而拦截相应的请求
+import "./mock/mockServer";
+
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
