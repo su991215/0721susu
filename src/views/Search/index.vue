@@ -14,20 +14,31 @@
           </ul>
           <ul class="fl sui-tag">
             <li class="with-x" v-show="options.keyword" @click="delKeyword">
-              {{ options.keyword }}<i>x</i>
+              关键字：{{ options.keyword }}<i>x</i>
             </li>
             <li
               class="with-x"
               v-show="options.categoryName"
               @click="delCategory"
             >
-              {{ options.categoryName }}<i>×</i>
+              分类名称：{{ options.categoryName }}<i>×</i>
+            </li>
+            <li class="with-x" v-show="options.trademark" @click="delTrademark">
+              品牌：{{ options.trademark.split(":")[1] }}<i>×</i>
+            </li>
+            <li
+              class="with-x"
+              v-for="(prop, index) in options.props"
+              :key="prop"
+              @click="delProp(index)"
+            >
+              {{ prop.split(":")[2] }}：{{ prop.split(":")[1] }}<i>×</i>
             </li>
           </ul>
         </div>
 
         <!-- 选择 -->
-        <SearchSelector />
+        <SearchSelector :addTrademark="addTrademark" @add-prop="add - prop" />
 
         <!-- 列表导航 -->
         <div class="details clearfix">
@@ -216,7 +227,25 @@ export default {
       this.$router.replace({
         name: "search",
         params: this.$route.params,
-      }); 
+      });
+    },
+    // 创建品牌
+    addTrademark(trademark) {
+      this.options.trademark = trademark;
+      this.updateProductList();
+    },
+    // 删除品牌
+    delTrademark() {
+      this.options.trademark = "";
+      this.updateProductList();
+    },
+    addProp(prop) {
+      this.options.props.push(prop);
+      this.updateProductList();
+    },
+    delProp(index) {
+      this.options.props.splice(index, 1);
+      this.updateProductList();
     },
   },
   mounted() {

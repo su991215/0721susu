@@ -174,7 +174,7 @@ export default {
         };
       }
 
-      if (this.$router.path.indexOf("/search") > -1) {
+      if (this.$router.name === "/search") {
         this.$router.replace(location);
       } else {
         this.$router.push(location);

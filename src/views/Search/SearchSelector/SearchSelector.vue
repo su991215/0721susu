@@ -3,24 +3,15 @@
     <div class="type-wrap logo">
       <div class="fl key brand">品牌</div>
       <div class="value logos">
+        <!-- 品牌 -->
         <ul class="logo-list">
-          <!-- <li>索尼（SONY）</li> -->
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">
+          <li
+            v-for="trademark in trademarkList"
+            :key="trademark.tmId"
+            @click="addTrademark(`${trademark.tmId}:${trademark.tmName}`)"
+          >
             {{ trademark.tmName }}
           </li>
-          <!-- <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone08.png" /></li>
-          <li><img src="./images/phone09.png" /></li>
-          <li><img src="./images/phone10.png" /></li>
-          <li><img src="./images/phone11.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone12.png" /></li>
-          <li><img src="./images/phone14.png" /></li>
-          <li><img src="./images/phone01.png" /></li>
-          <li><img src="./images/phone06.png" /></li>
-          <li><img src="./images/phone07.png" /></li>
-          <li><img src="./images/phone02.png" /></li> -->
         </ul>
       </div>
       <div class="ext">
@@ -28,12 +19,19 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
+    <!-- 品牌属性 -->
     <div class="type-wrap" v-for="attrs in attrsList" :key="attrs.attrId">
       <div class="fl key">{{ attrs.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attr,index) in attrs.attrValueList" :key="index">
-            <a>{{attr}}</a>
+          <li
+            v-for="(attr, index) in attrs.attrValueList"
+            :key="index"
+            @click="
+              $emit('add-prop', `${attrs.attrId}:${attr}:${attrs.attrName}`)
+            "
+          >
+            <a>{{ attr }}</a>
           </li>
         </ul>
       </div>
@@ -47,6 +45,9 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "SearchSelector",
+  props: {
+    addTrademark: Function,
+  },
   computed: {
     ...mapGetters(["trademarkList", "attrsList"]),
   },
