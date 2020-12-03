@@ -21,6 +21,9 @@ Vue.use(ElementUI);
 
 /* eslint-disable no-new */
 new Vue({
+  beforeCreate(){
+    Vue.prototype.$bus = this
+  },
   render: (h) => h(App),
   // 应用router
   router,

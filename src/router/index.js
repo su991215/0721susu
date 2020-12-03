@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Home from "../views/Home";
 import Login from "../views/Login";
 import Register from "../views/Register";
@@ -38,14 +39,23 @@ export default new VueRouter({
     {
       path: "/login",
       component: Login,
+      // 当组件加载显示时，meta中的参数会传到$route中
+      // 当组件不加载显示时，meta中的参数不会传
+      meta: {
+        isFooterHide: true,
+      },
     },
     {
       path: "/register",
       component: Register,
-      ifFooterShow: true,
+      meta: {
+        isFooterHide: true,
+      },
     },
     {
-      // ?代表可以有值可以没值
+      // 命名路由
+      name: "search",
+      // ?: 代表 params 参数是可选的
       path: "/search/:searchText?",
       component: Search,
     },

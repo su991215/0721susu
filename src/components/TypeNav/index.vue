@@ -1,8 +1,8 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container" @mouseenter="isSearchShow = false">
-      <h2 class="all" @mouseleave="isSearchShow = true">全部商品分类</h2>
+    <div class="container" @mouseleave="isSearchShow = false">
+      <h2 class="all" @mouseenter="isSearchShow = true">全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -37,7 +37,7 @@
                 <!-- 第二种方案：编程式导航 -->
                 <!-- <a
                 @click.prevent="
-                  $router.push({
+                  $router.replace({
                     name: 'search',
                     query: {
                       categoryName: category.categoryName,
@@ -69,7 +69,7 @@
                     > -->
                       <!-- <a
                       @click.prevent="
-                        $router.push({
+                        $router.replace({
                           name: 'search',
                           query: {
                             categoryName: child.categoryName,
@@ -98,7 +98,7 @@
                       > -->
                         <!-- <a
                         @click.prevent="
-                          $router.push({
+                          $router.replace({
                             name: 'search',
                             query: {
                               categoryName: grandChild.categoryName,
@@ -174,10 +174,16 @@ export default {
         };
       }
 
-      this.$router.push(location);
+      if (this.$router.path.indexOf("/search") > -1) {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
     },
   },
   mounted() {
+    if (this.categoryList.length) return;
+
     // 调用vuex的action函数
     this.getCategoryList();
     // 跳转search

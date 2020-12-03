@@ -66,28 +66,40 @@ export default {
       const { searchText } = this;
       // 判断是否要添加params参数
       const params = searchText ? `/${searchText}` : "";
-      // 生存跳转的路径
+      // 生成跳转的路径
       const location = "/search" + params;
       // 编程式导航 路径
-      this.$router.push(location, (res) => {
-        console.log("成功", res),
-          (err) => {
-            console.log(err);
-          };
-      });
+
+      if (this.$router.path.indexOf("/search") > -1) {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
+
+      // this.$router.replace(location, (res) => {
+      //   console.log("成功", res),
+      //     (err) => {
+      //       console.log(err);
+      //     };
+      // });
     },
     // search() {
     //   // this里面提取searchText
     //   // 获取搜索的数据
     //   const { searchText } = this;
     //   // 编程式导航 路径
-    //   this.$router.push({
+    //   this.$router.replace({
     //     name: "/search",
     //     params: {
     //       searchText:searchText,
     //     },
     //   });
     // },
+  },
+  mounted() {
+    this.$bus.$on("clearKeyword", () => {
+      this.searchText = "";
+    });
   },
 };
 </script>
