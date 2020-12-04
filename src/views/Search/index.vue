@@ -139,34 +139,17 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
+          <div class="block">
+            <span class="demonstration">显示总数</span>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="options.pageNo"
+              :page-size="10"
+              layout="total,prev, pager, next"
+              :total="total"
+            >
+            </el-pagination>
           </div>
         </div>
       </div>
@@ -212,12 +195,12 @@ export default {
     //   attrsList: (state) => state.search.productList,
     //   goodsList: (state) => state.search.productList,
     // }),
-    ...mapGetters(["trademarkList", "attrsList", "goodsList"]),
+    ...mapGetters(["trademarkList", "attrsList", "goodsList", "total"]),
   },
   methods: {
     ...mapActions(["getProductList"]),
     // 这里面更新商品列表
-    updateProductList() {
+    updateProductList(pageNo = 1) {
       const { searchText: keyword } = this.$route.params;
       const {
         categoryName,
@@ -233,6 +216,7 @@ export default {
         category1Id,
         category2Id,
         category3Id,
+        pageNo,
       };
       this.options = options;
       this.getProductList(options);
@@ -281,7 +265,7 @@ export default {
     },
     // 设置排序的方法 1：desc
     setOrder(order) {
-      const [orderNum, orderType] = this.options.order.split(":");
+      let [orderNum, orderType] = this.options.order.split(":");
 
       if (orderNum === order) {
         if (order === "1") {
@@ -289,12 +273,27 @@ export default {
         } else {
           this.isPriceDown = !this.isPriceDown;
         }
-
-        // orderType = orderType === "desc" ? "asc" : "desc";
+        orderType = orderType === "desc" ? "asc" : "desc";
       } else {
-        this.isPriceDown = false;
+        if (order === "1") {
+          orderType = this.isDown ? "desc" : "asc";
+        } else {
+          this.isPriceDown = false;
+          orderType = "asc";
+        }
       }
       this.options.order = `${order}:${orderType}`;
+      this.updateProductList();
+    },
+    // 当每页条数发生变化触发
+    handleSizeChange(pageSize) {
+      this.options.pageSize = pageSize;
+      this.updateProductList();
+    },
+    // 当页码发生变化触发
+    handleCurrentChange(pageNo) {
+      // this.options.pageNo = pageNo;
+      this.updateProductList(pageNo);
     },
   },
   mounted() {
