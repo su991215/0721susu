@@ -11,6 +11,7 @@ import store from "./store";
 // 引入公共资源
 import "./styles/reset.css";
 import "./plugins/element.js";
+import '../src/styles/iconfont.css'
 
 // 引入mockSever，为了加载里面的代码
 // 一但加载，就会启动mock服务器，从而拦截相应的请求

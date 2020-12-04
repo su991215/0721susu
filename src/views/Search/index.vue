@@ -45,23 +45,53 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li
+                  :class="{ active: options.order.indexOf('1') > -1 }"
+                  @click="setOrder('1')"
+                >
+                  <a
+                    >综合
+                    <i
+                      :class="{
+                        iconfont: true,
+                        'icon-xiajiantou': isDown,
+                        'icon-shangjiantou': !isDown,
+                      }"
+                    ></i
+                  ></a>
                 </li>
                 <li>
-                  <a href="#">销量</a>
+                  <a>销量</a>
                 </li>
                 <li>
-                  <a href="#">新品</a>
+                  <a>新品</a>
                 </li>
                 <li>
-                  <a href="#">评价</a>
+                  <a>评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li
+                  :class="{ active: options.order.indexOf('2') > -1 }"
+                  @click="setOrder('2')"
+                >
+                  <a
+                    >价格
+                    <span>
+                      <i
+                        :class="{
+                          deactive:
+                            options.order.indexOf('2') > -1 && isPriceDown,
+                        }"
+                        >▲</i
+                      >
+                      <i
+                        :class="{
+                          deactive:
+                            options.order.indexOf('2') > -1 && !isPriceDown,
+                        }"
+                        >▼</i
+                      >
+                    </span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -159,12 +189,14 @@ export default {
         category3Id: "", //3级别
         categoryName: "", //分类名称
         keyword: "", //搜索关键字
-        order: "", //排序方式：1：综合排序 2：价格排序 asc代表升序，desc代表降序
+        order: "1.desc", //排序方式：1：综合排序 2：价格排序 asc代表升序，desc代表降序
         pageNo: 1, //第一页
         pageSize: 5, //分页商品数量
         props: [], //商品属性
         trademark: "", //品牌
       },
+      isDown: true,
+      isPriceDown: false,
     };
   },
   watch: {
@@ -246,6 +278,23 @@ export default {
     delProp(index) {
       this.options.props.splice(index, 1);
       this.updateProductList();
+    },
+    // 设置排序的方法 1：desc
+    setOrder(order) {
+      const [orderNum, orderType] = this.options.order.split(":");
+
+      if (orderNum === order) {
+        if (order === "1") {
+          this.isDown = !this.isDown;
+        } else {
+          this.isPriceDown = !this.isPriceDown;
+        }
+
+        // orderType = orderType === "desc" ? "asc" : "desc";
+      } else {
+        this.isPriceDown = false;
+      }
+      this.options.order = `${order}:${orderType}`;
     },
   },
   mounted() {
@@ -346,7 +395,7 @@ export default {
           border: 1px solid #e2e2e2;
           padding-left: 0;
           border-radius: 0;
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+          box-shadow: 0 1px 4px rgba(22, 16, 16, 0.065);
 
           .sui-nav {
             position: relative;
@@ -360,11 +409,24 @@ export default {
               line-height: 18px;
 
               a {
-                display: block;
+                display: flex;
+                justify-content: space-around;
                 cursor: pointer;
                 padding: 11px 15px;
                 color: #777;
                 text-decoration: none;
+
+                span {
+                  display: flex;
+                  flex-direction: column;
+                  line-height: 9px;
+                  i {
+                    font-size: 8px;
+                    &.deactive {
+                      color: rgba(22, 16, 16, 0.4);
+                    }
+                  }
+                }
               }
 
               &.active {
@@ -433,7 +495,6 @@ export default {
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 2;
-
                 a {
                   color: #333;
                   text-decoration: none;

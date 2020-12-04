@@ -70,7 +70,7 @@ export default {
       const location = "/search" + params;
       // 编程式导航 路径
 
-      if (this.$router.path.indexOf("/search") > -1) {
+      if (this.$route.path.indexOf("/search") > -1) {
         this.$router.replace(location);
       } else {
         this.$router.push(location);
