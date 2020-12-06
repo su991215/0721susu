@@ -3,6 +3,9 @@ import axios from "axios";
 import { Message } from "element-ui";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import getUserTempId from "./getUserTempId";
+
+const userTempId = getUserTempId();
 
 const instance = axios.create({
   baseURL: "/api", //公共的基础路径
@@ -18,6 +21,8 @@ instance.interceptors.request.use((config) => {
   // if (token) {
   //   config.headers.token = token;
   // }
+  config.headers.userTempId = userTempId;
+
   return config;
 });
 

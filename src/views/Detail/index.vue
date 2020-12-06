@@ -18,13 +18,13 @@
           <!--放大镜效果-->
           <Zoom
             :imgUrl="
-              skuInfo.skuImageList &&
               skuInfo.skuImageList[currentImgIndex] &&
               skuInfo.skuImageList[currentImgIndex].imgUrl
             "
-            bigImgUrl="skuInfo.skuImageList&&
-            skuInfo.skuImageList[currentImgIndex]&&
-            skuInfo.skuImageList[currentImgIndex].imgUrl"
+            :bigImgUrl="
+              skuInfo.skuImageList[currentImgIndex] &&
+              skuInfo.skuImageList[currentImgIndex].imgUrl
+            "
           />
           <!-- 小图列表 -->
           <ImageList
@@ -36,7 +36,7 @@
         <div class="InfoWrap">
           <div class="goodsDetail">
             <h3 class="InfoName">
-              {{ skuInfo.spuId }}
+              {{ skuInfo.skuName }}
             </h3>
             <p class="news">
               {{ skuInfo.skuDesc }}
@@ -88,33 +88,28 @@
             <div class="chooseArea">
               <div class="choosed"></div>
               <dl v-for="spuSaleAttr in spuSaleAttrList" :key="spuSaleAttr.id">
-                <dt class="title">{{ spuSaleAttr.spuSaleAttrName }}</dt>
+                <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
                 <dd
                   changepirce="0"
-                  v-for="spuSaleAttrValue in spuSaleAttrList"
+                  v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
                   class="active"
                 >
-                  spuSaleAttrValue.saleAttrValueName
+                  {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <el-input-number
+                  class="input-number"
+                  v-model="skuNum"
+                  controls-position="right"
+                  :min="1"
+                  :max="100"
+                ></el-input-number>
               </div>
-              <div class="add">
+              <div class="add" @click="addCart">
                 <a href="javascript:">加入购物车</a>
               </div>
             </div>
@@ -356,24 +351,41 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 
+import TypeNav from "@comps/TypeNav";
 import ImageList from "./ImageList/ImageList";
 import Zoom from "./Zoom/Zoom";
-import TypeNav from "../../components/TypeNav";
 
 export default {
   name: "Detail",
   data() {
     return {
-      currentImgIndex: 0,
+      currentImgIndex: 0, // 当前选中图片的下标
+      skuNum: 1, // 商品数量
     };
   },
   computed: {
-    ...mapGetters(["categoryView", "spuSaleAttrList", "skuInfo"]),
+    ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
   },
   methods: {
-    ...mapActions(["getProductDetail"]),
+    ...mapActions(["getProductDetail", "updateCartCount"]),
+    // 更新选中图片的下标
     updateCurrentImgIndex(index) {
       this.currentImgIndex = index;
+    },
+    // 加入购物车
+    async addCart() {
+      try {
+        // 发送请求，加入购物车
+        // actions函数必须返回一个promise对象，才会等待它执行
+        await this.updateCartCount({
+          skuId: this.skuInfo.id,
+          skuNum: this.skuNum,
+        });
+        // 一旦加入购物车，跳转到加入购物车成功页面
+        this.$router.push(`/addcartsuccess?skuNum=${this.skuNum}`);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   mounted() {
@@ -592,6 +604,7 @@ export default {
 
             .add {
               float: left;
+              
 
               a {
                 background-color: #e1251b;
@@ -601,6 +614,7 @@ export default {
                 height: 36px;
                 line-height: 36px;
                 display: block;
+                margin-left:150px;
               }
             }
           }

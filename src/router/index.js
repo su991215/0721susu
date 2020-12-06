@@ -71,16 +71,16 @@ export default new VueRouter({
     },
     {
       // 命名路由
-      name: "shopCart",
+      name: "shopcart",
       // ?: 代表 params 参数是可选的
-      path: "/shopCart",
+      path: "/shopcart",
       component: ShopCart,
     },
     {
       // 命名路由
-      name: "addCartSuccess",
+      name: "addcartsuccess",
       // ?: 代表 params 参数是可选的
-      path: "/addCartSuccess",
+      path: "/addcartsuccess",
       component: AddCartSuccess,
     },
   ],
