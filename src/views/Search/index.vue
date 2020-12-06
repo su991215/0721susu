@@ -102,9 +102,9 @@
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
+                    <router-link :to="`/detail/${goods.id}`"
                       ><img :src="goods.defaultImg"
-                    /></a>
+                    /></router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -113,12 +113,9 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a
-                      target="_blank"
-                      href="item.html"
-                      title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >{{ goods.title }}</a
-                    >
+                    <router-link :to="`/detail/${goods.id}`">{{
+                      goods.title
+                    }}</router-link>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -146,6 +143,7 @@
               @current-change="handleCurrentChange"
               :current-page.sync="options.pageNo"
               :page-size="10"
+              :pager-count="5"
               layout="total,prev, pager, next"
               :total="total"
             >

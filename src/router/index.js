@@ -5,6 +5,9 @@ import Home from "../views/Home";
 import Login from "../views/Login";
 import Register from "../views/Register";
 import Search from "../views/Search";
+import Detail from "../views/Detail";
+import ShopCart from '../views/ShopCart'
+import AddCartSuccess from '../views/AddCartSuccess'
 
 const push = VueRouter.prototype.push;
 const replace = VueRouter.prototype.replace;
@@ -59,5 +62,30 @@ export default new VueRouter({
       path: "/search/:searchText?",
       component: Search,
     },
+    {
+      // 命名路由
+      name: "detail",
+      // ?: 代表 params 参数是可选的
+      path: "/detail/:id",
+      component: Detail,
+    },
+    {
+      // 命名路由
+      name: "shopCart",
+      // ?: 代表 params 参数是可选的
+      path: "/shopCart",
+      component: ShopCart,
+    },
+    {
+      // 命名路由
+      name: "addCartSuccess",
+      // ?: 代表 params 参数是可选的
+      path: "/addCartSuccess",
+      component: AddCartSuccess,
+    },
   ],
+  scrollBehavior() {
+    // return 期望滚动到哪个的位置
+    return { x: 0, y: 0 };
+  },
 });

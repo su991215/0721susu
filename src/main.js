@@ -16,6 +16,7 @@ import '../src/styles/iconfont.css'
 // 引入mockSever，为了加载里面的代码
 // 一但加载，就会启动mock服务器，从而拦截相应的请求
 import "./mock/mockServer";
+import "swiper/swiper-bundle.min.css";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
