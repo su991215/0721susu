@@ -25,25 +25,31 @@
             <span class="price">{{ cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a
+            <button
               href="javascript:void(0)"
               @click="updateCount(cart.skuId, -1)"
               class="mins"
-              >-</a
+              :disabled="cart.skuNum === 1"
             >
+              -
+            </button>
             <input
               autocomplete="off"
               type="text"
               :value="cart.skuNum"
               minnum="1"
               class="itxt"
+              @blur="update(cart.skuId, cart.skuNum, $event)"
+              @input="formatSkuNum"
             />
-            <a
+            <button
               href="javascript:void(0)"
               @click="updateCount(cart.skuId, 1)"
               class="plus"
-              >+</a
+              :disabled="cart.skuNum === 10"
             >
+              +
+            </button>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ cart.skuNum * cart.skuPrice }}</span>
@@ -107,6 +113,24 @@ export default {
   methods: {
     ...mapActions(["getCartList", "updateCartCount"]),
     // 更新商品数量
+    formatSkuNum(e) {
+      let skuNum = +e.target.value.replace(/\D+/g, "");
+      if (skuNum < 1) {
+        skuNum === 1;
+      } else if (skuNum > 10) {
+        skuNum === 10;
+      }
+      e.target.value === skuNum;
+    },
+
+    update(skuId, skuNum, e) {
+      // 当前商品数量是10 e.target.value 6 --> -4  6 - 10
+      // 当前商品数量是3 e.target.value 6 --> 3
+      if (+e.target.value === skuNum) {
+        return;
+      }
+      this.updateCartCount({ skuId, skuNum: e.target.value - skuNum });
+    },
     async updateCount(skuId, skuNum) {
       // 更新商品
       await this.updateCartCount({ skuId, skuNum });
