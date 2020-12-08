@@ -8,6 +8,11 @@ import Search from "../views/Search";
 import Detail from "../views/Detail";
 import ShopCart from '../views/ShopCart'
 import AddCartSuccess from '../views/AddCartSuccess'
+import Pay from '../views/Pay'
+import PaySuccess from '../views/PaySuccess'
+import Center from '../views/Center'
+import Trade from '../views/Trade'
+
 
 const push = VueRouter.prototype.push;
 const replace = VueRouter.prototype.replace;
@@ -82,6 +87,34 @@ export default new VueRouter({
       // ?: 代表 params 参数是可选的
       path: "/addcartsuccess",
       component: AddCartSuccess,
+    },
+    {
+      // 命名路由
+      name: "pay",
+      // ?: 代表 params 参数是可选的
+      path: "/pay",
+      component: Pay,
+    },
+    {
+      // 命名路由
+      name: "paysuccess",
+      // ?: 代表 params 参数是可选的
+      path: "/paysuccess",
+      component: PaySuccess,
+    },
+    {
+      // 命名路由
+      name: "center",
+      // ?: 代表 params 参数是可选的
+      path: "/center",
+      component: Center,
+    },
+    {
+      // 命名路由
+      name: "trade",
+      // ?: 代表 params 参数是可选的
+      path: "/trade",
+      component: Trade,
     },
   ],
   scrollBehavior() {

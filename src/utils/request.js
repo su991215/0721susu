@@ -4,6 +4,7 @@ import { Message } from "element-ui";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import getUserTempId from "./getUserTempId";
+import store from "../store";
 
 const userTempId = getUserTempId();
 
@@ -18,9 +19,10 @@ instance.interceptors.request.use((config) => {
   // 将来发送请求（请求地址，请求参数，请求方式等）都会在config中
 
   // 修改config，来添加公共请求参数
-  // if (token) {
-  //   config.headers.token = token;
-  // }
+  const token = store.state.user.token;
+  if (token) {
+    config.headers.token = token;
+  }
   config.headers.userTempId = userTempId;
 
   return config;

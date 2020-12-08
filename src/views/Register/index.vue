@@ -54,7 +54,7 @@
         <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="btn">
-        <button @click="register">完成注册</button>
+        <button @click="submit">完成注册</button>
       </div>
     </div>
 
@@ -82,19 +82,18 @@ import { required } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required,
-  message: "手机号必须要填写", //错误信息
+  message: "手机号必须要填写", // 错误信息
 });
+
 extend("length", {
-  // 表单验证确认 validate
   validate(value) {
-    // 必须要11位数
     return value.length === 11;
   },
-  message: "长度必须为11位",
+  message: "长度必须为11位", // 错误信息
 });
-extend("phone ", {
+extend("phone", {
   validate(value) {
-    return /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-7|9])|(?:5[0-3|5-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1|8|9]))\d{8}$/.test(
+    return /^(13[0-9]|14[01456879]|15[0-3,5-9]|16[2567]|17[0-8]|18[0-9]|19[0-3,5-9])\d{8}$/.test(
       value
     );
   },
@@ -114,25 +113,35 @@ export default {
     };
   },
   methods: {
-    register() {
-      // 第一步：收集表单数据
-      const { phone, password, rePassword, code, isAgree } = this.user;
-      // 进行正则校验
-      if (!isAgree) {
-        this.$message("请同意用户协议！");
-        return;
-      }
-      if (password !== rePassword) {
-        this.$message("两次输入密码不一致！");
-        return;
-      }
-      console.log(phone, password, rePassword, code, isAgree);
+    async submit() {
+      try {
+        // 第一步：收集表单数据
+        const { phone, password, rePassword, code, isAgree } = this.user;
+        // 进行正则校验
+        if (!isAgree) {
+          this.$message.error("请同意用户协议！");
+          return;
+        }
+        if (password !== rePassword) {
+          this.$message.error("两次输入密码不一致！");
+          return;
+        }
+        // console.log(phone, password, rePassword, code, isAgree);
 
-      // 发送请求注册
+        // 发送请求注册
+        await this.$store.dispatch("register", { phone, password, code });
+        this.$router.push("/login");
+      } catch {
+        this.user.password = "";
+        this.user.rePassword = "";
+        this.refresh();
+      }
     },
     // 刷新验证码
-    refresh(e) {
-      e.target.src = "http://182.92.128.115/api/user/passport/code";
+    refresh() {
+      this.$refs.code.src = "http://182.92.128.115/api/user/passport/code";
+
+      // e.target.src = "http://182.92.128.115/api/user/passport/code";
     },
   },
   components: {
