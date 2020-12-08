@@ -1,21 +1,23 @@
+// @ts-nocheck
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
 
 import Home from "../views/Home";
 import Login from "../views/Login";
 import Register from "../views/Register";
 import Search from "../views/Search";
 import Detail from "../views/Detail";
-import ShopCart from '../views/ShopCart'
-import AddCartSuccess from '../views/AddCartSuccess'
-import Pay from '../views/Pay'
-import PaySuccess from '../views/PaySuccess'
-import Center from '../views/Center'
-import Trade from '../views/Trade'
-
+import AddCartSuccess from "../views/AddCartSuccess";
+import ShopCart from "../views/ShopCart";
+import Trade from "../views/Trade";
+import Pay from "../views/Pay";
+import PaySuccess from "../views/PaySuccess";
+import Center from "../views/Center";
 
 const push = VueRouter.prototype.push;
 const replace = VueRouter.prototype.replace;
+
 
 // 重写了push和replace方法，
 // 目的是为了不让导航点击时报错
@@ -38,7 +40,7 @@ VueRouter.prototype.replace = function(location, onComplete, onAbort) {
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router = new VueRouter({
   routes: [
     {
       path: "/",
@@ -106,7 +108,7 @@ export default new VueRouter({
       // 命名路由
       name: "center",
       // ?: 代表 params 参数是可选的
-      path: "/center",
+      path: "/center/myorder",
       component: Center,
     },
     {
@@ -122,3 +124,26 @@ export default new VueRouter({
     return { x: 0, y: 0 };
   },
 });
+
+// 需要进行权限验证的地址
+const permissionPaths = ["/trade", "/pay", "/center"];
+// 路由全局前置守卫
+router.beforeEach((to, from, next) => {
+  /*
+		to   要去的路由对象($route)
+		from 从哪来的路由对象（当前路由对象）($route)
+		next 是一个函数：跳转到哪个路由的方法
+			比如：要去to这个路由 next()	
+						要去登录路由 next('/login')  next({path: '/login'})  next({name: 'login'})
+	
+		
+		权限验证：
+			如果用户未登录，不允许去 trade pay center 等路由
+  */
+  console.log(from);
+  if (permissionPaths.indexOf(to.path) > -1 && !store.state.user.token) {
+    return next("/login");
+  }
+  next();
+});
+export default router;
