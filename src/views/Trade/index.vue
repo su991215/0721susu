@@ -100,13 +100,13 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <button class="subBtn" @click="submit">提交订单</button>
     </div>
   </div>
 </template>
 
 <script>
-import { reqGetTrade } from "../../api/pay";
+import { reqGetTrade, reqSubmitOrder } from "../../api/pay";
 export default {
   name: "Trade",
   data() {
@@ -115,6 +115,23 @@ export default {
       selectAddressId: -1,
       orderComment: "",
     };
+  },
+  methods: {
+    async submit() {
+      const { tradeNo, consignee, detailArrayList } = this.trade;
+      const { phoneNum, userAddress } = this.selectAddress;
+      await reqSubmitOrder({ 
+        tradeNo,
+        consignee: consignee,
+        consigneeTel: phoneNum,
+        deliveryAddress: userAddress,
+        paymentWay: "ONLINE",
+        orderComment: this.orderComment,
+        orderDetailList: detailArrayList,
+      });
+
+      this.$router.push("/pay");
+    },
   },
   computed: {
     selectAddress() {
